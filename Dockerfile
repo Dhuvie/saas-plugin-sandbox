@@ -13,7 +13,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # --- STAGE 2: Build Go Host Binary ---
-FROM golang:1.22-bookworm AS backend-builder
+FROM golang:1.25-bookworm AS backend-builder
 
 # Install GCC for compiling Wasmtime CGO bindings
 RUN apt-get update && apt-get install -y \
@@ -38,7 +38,7 @@ ENV CGO_ENABLED=1
 RUN go build -o wasm-host main.go
 
 # --- STAGE 3: Production Runtime Environment ---
-FROM golang:1.22-bookworm
+FROM golang:1.25-bookworm
 
 # Install runtime compiler tools and Rust toolchain
 RUN apt-get update && apt-get install -y \
