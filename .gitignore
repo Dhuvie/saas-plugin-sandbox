@@ -1,0 +1,37 @@
+# Compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+wasm-host
+wasm-host.exe
+
+# SQLite database files
+*.db
+*.db-journal
+
+# Go test / build caches
+.bin/
+.build/
+
+# Rust build artifacts
+**/target/
+.toolchain/
+
+# Node / Frontend artifacts
+**/node_modules/
+**/dist/
+.oxlintrc.json
+
+# Local env files / secrets
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Layman Guide
+EXPLANATION.md
