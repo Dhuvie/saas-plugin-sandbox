@@ -266,7 +266,10 @@ export default function App() {
         method: 'DELETE'
       });
 
-      if (!res.ok) throw new Error('Failed to delete plugin');
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || 'Failed to delete plugin');
+      }
 
       setPlugins(prev => prev.filter(p => p.id !== id));
       if (selectedPlugin?.id === id) {
