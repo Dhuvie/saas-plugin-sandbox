@@ -123,7 +123,7 @@ const DEFAULT_PAYLOAD = `{
   "points": 650
 }`;
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = window.location.port === '5173' ? 'http://localhost:8080' : '';
 
 export default function App() {
   const [plugins, setPlugins] = useState<Plugin[]>([]);
