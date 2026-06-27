@@ -151,8 +151,7 @@ export default function App() {
   const fetchPlugins = async (selectFirst = false) => {
     try {
       const res = await fetch(`${API_BASE}/api/plugins`);
-      if (!res.ok) throw new Error('API Error');
-      const data: Plugin[] = await res.json();
+      const data: Plugin[] = (await res.json()) || [];
       setPlugins(data);
       setBackendConnected(true);
       

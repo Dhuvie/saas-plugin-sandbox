@@ -193,6 +193,10 @@ func (app *App) handleListPlugins(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if plugins == nil {
+		plugins = []*db.Plugin{}
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(plugins)
 }
