@@ -1,6 +1,6 @@
 # Isolated WebAssembly Tenant Plugin Runtime for SaaS Environments
-
 This repository implements a high-performance, secure, and resource-constrained execution platform designed to run untrusted guest scripts within SaaS environments. The runtime leverages Rust compilation targeting WebAssembly (Wasm) and utilizes the Wasmtime virtual engine embedded in a Go host environment to enforce strict resource ceilings and prevent escape attempts.
+
 ---
 
 ## Architectural Specifications
