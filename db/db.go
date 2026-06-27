@@ -34,5 +34,6 @@ type Repository interface {
 	UpdatePluginCode(id string, name string, sourceCode string) error
 	SaveExecution(exec *Execution) error
 	GetExecutions(pluginID string) ([]*Execution, error)
+	DeletePlugin(id string) error
 	Close() error
 }

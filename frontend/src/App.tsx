@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { 
   Play, Cpu, Code2, Activity, Plus, RefreshCw, 
-  AlertTriangle, CheckCircle2, Shield, Flame, TerminalSquare, AreaChart as ChartIcon, FileCode, AlertCircle, HelpCircle, HardDrive
+  AlertTriangle, CheckCircle2, Shield, Flame, TerminalSquare, AreaChart as ChartIcon, FileCode, AlertCircle, HelpCircle, HardDrive, Trash2
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
@@ -257,6 +257,30 @@ export default function App() {
     }
   };
 
+  const handleDeletePlugin = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm('Are you sure you want to delete this plugin and all its execution history?')) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/plugins/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!res.ok) throw new Error('Failed to delete plugin');
+
+      setPlugins(prev => prev.filter(p => p.id !== id));
+      if (selectedPlugin?.id === id) {
+        setSelectedPlugin(null);
+        setEditorCode('');
+        setPluginName('');
+        setMetricsData([]);
+        setExecResult(null);
+      }
+    } catch (err) {
+      alert('Error deleting plugin: ' + err);
+    }
+  };
+
 
   const handleRunExecution = async () => {
     if (!selectedPlugin || selectedPlugin.status !== 'compiled') return;
@@ -465,10 +489,17 @@ export default function App() {
                     v{plugin.version} • {new Date(plugin.created_at).toLocaleTimeString()}
                   </div>
                 </div>
-                <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                   <span className={`badge badge-${plugin.status}`}>
                     {plugin.status}
                   </span>
+                  <button 
+                    className="delete-btn" 
+                    title="Delete plugin"
+                    onClick={(e) => handleDeletePlugin(plugin.id, e)}
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
             ))}

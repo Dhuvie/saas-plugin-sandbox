@@ -206,6 +206,15 @@ func (r *SQLiteRepository) GetExecutions(pluginID string) ([]*Execution, error) 
 	return executions, nil
 }
 
+func (r *SQLiteRepository) DeletePlugin(id string) error {
+	_, err := r.db.Exec("DELETE FROM executions WHERE plugin_id = ?", id)
+	if err != nil {
+		return err
+	}
+	_, err = r.db.Exec("DELETE FROM plugins WHERE id = ?", id)
+	return err
+}
+
 func (r *SQLiteRepository) Close() error {
 	return r.db.Close()
 }

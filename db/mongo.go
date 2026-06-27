@@ -148,6 +148,17 @@ func (r *MongoRepository) GetExecutions(pluginID string) ([]*Execution, error) {
 	return executions, nil
 }
 
+func (r *MongoRepository) DeletePlugin(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	_, err := r.executions.DeleteMany(ctx, bson.M{"plugin_id": id})
+	if err != nil {
+		return err
+	}
+	_, err = r.plugins.DeleteOne(ctx, bson.M{"_id": id})
+	return err
+}
+
 func (r *MongoRepository) Close() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

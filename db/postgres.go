@@ -203,6 +203,15 @@ func (r *PostgresRepository) GetExecutions(pluginID string) ([]*Execution, error
 	return executions, nil
 }
 
+func (r *PostgresRepository) DeletePlugin(id string) error {
+	_, err := r.db.Exec("DELETE FROM executions WHERE plugin_id = $1", id)
+	if err != nil {
+		return err
+	}
+	_, err = r.db.Exec("DELETE FROM plugins WHERE id = $1", id)
+	return err
+}
+
 func (r *PostgresRepository) Close() error {
 	return r.db.Close()
 }

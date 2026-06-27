@@ -66,6 +66,7 @@ func main() {
 	mux.HandleFunc("GET /api/plugins/{id}", app.handleGetPlugin)
 	mux.HandleFunc("POST /api/plugins/{id}/execute", app.handleExecutePlugin)
 	mux.HandleFunc("GET /api/plugins/{id}/metrics", app.handleGetMetrics)
+	mux.HandleFunc("DELETE /api/plugins/{id}", app.handleDeletePlugin)
 
 	if _, err := os.Stat("./frontend/dist"); err == nil {
 		fmt.Println("[Init] Serving React frontend from ./frontend/dist")
@@ -304,4 +305,19 @@ func (app *App) handleGetMetrics(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(executions)
+}
+
+func (app *App) handleDeletePlugin(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	if id == "" {
+		http.Error(w, "Missing plugin ID parameter", http.StatusBadRequest)
+		return
+	}
+
+	if err := app.repo.DeletePlugin(id); err != nil {
+		http.Error(w, fmt.Sprintf("Failed to delete plugin: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
